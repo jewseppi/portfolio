@@ -11,7 +11,6 @@ export default function Home() {
   >("normal");
 
   const handleTerminalAction = (action: "close" | "minimize" | "expand") => {
-    const terminal = document.getElementById("code-terminal");
     const container = document.getElementById("terminal-container");
 
     switch (action) {
@@ -25,11 +24,19 @@ export default function Home() {
         setTerminalState((prev) =>
           prev === "minimized" ? "normal" : "minimized"
         );
+        if (container) {
+          container.setAttribute("data-terminal-expanded", "false");
+        }
         break;
       case "expand":
-        setTerminalState((prev) =>
-          prev === "expanded" ? "normal" : "expanded"
-        );
+        const newState = terminalState === "expanded" ? "normal" : "expanded";
+        setTerminalState(newState);
+        if (container) {
+          container.setAttribute(
+            "data-terminal-expanded",
+            newState === "expanded" ? "true" : "false"
+          );
+        }
         break;
     }
   };
@@ -66,16 +73,17 @@ export default function Home() {
       const codeContent = document.querySelector(
         ".code-content"
       ) as HTMLElement;
-      const terminal = document.querySelector(".code-terminal") as HTMLElement;
 
-      if (!codeContent || !terminal) return;
+      if (!codeContent) return;
 
-      let hasBeenEdited = false;
-      let originalContent = codeContent.getAttribute("data-original") || "";
+      const originalContent = codeContent.getAttribute("data-original") || "";
 
       // Handle input with visual feedback
       const handleInput = () => {
-        hasBeenEdited = true;
+        const terminal = document.querySelector(
+          ".code-terminal"
+        ) as HTMLElement;
+        if (!terminal) return;
 
         // Show visual feedback
         terminal.style.borderColor = "var(--primary)";
@@ -101,8 +109,12 @@ export default function Home() {
 
       // Restore original content
       const restoreOriginal = () => {
+        const terminal = document.querySelector(
+          ".code-terminal"
+        ) as HTMLElement;
+        if (!terminal) return;
+
         codeContent.innerHTML = `const architect = {<br/>  background: "Enterprise Software",<br/>  specializing: "AI/ML Applications",<br/>  focus: "Intelligent automation" 🧠<br/>};<br/><br/><span class="comment">// Click anywhere to edit the code</span><br/><span class="comment">// ESC to restore</span>`;
-        hasBeenEdited = false;
         terminal.style.borderColor = "rgba(255, 107, 53, 0.3)";
         terminal.style.boxShadow = "none";
       };
@@ -141,11 +153,21 @@ export default function Home() {
 
       // Focus effects
       codeContent.addEventListener("focus", () => {
-        terminal.classList.add("terminal-focused");
+        const terminal = document.querySelector(
+          ".code-terminal"
+        ) as HTMLElement;
+        if (terminal) {
+          terminal.classList.add("terminal-focused");
+        }
       });
 
       codeContent.addEventListener("blur", () => {
-        terminal.classList.remove("terminal-focused");
+        const terminal = document.querySelector(
+          ".code-terminal"
+        ) as HTMLElement;
+        if (terminal) {
+          terminal.classList.remove("terminal-focused");
+        }
       });
 
       // Handle Enter key for line breaks
@@ -165,8 +187,17 @@ export default function Home() {
 
   useEffect(() => {
     const terminal = document.getElementById("code-terminal");
+    const container = document.getElementById("terminal-container");
+
     if (terminal) {
       terminal.setAttribute("data-state", terminalState);
+    }
+
+    if (container) {
+      container.setAttribute(
+        "data-terminal-expanded",
+        terminalState === "expanded" ? "true" : "false"
+      );
     }
   }, [terminalState]);
 
@@ -535,10 +566,12 @@ export default function Home() {
           <div className="container">
             <div className="section-header">
               <div className="section-badge">💬 Get In Touch</div>
-              <h2 className="section-title">Let's Build Something Amazing</h2>
+              <h2 className="section-title">
+                Let&apos;s Build Something Amazing
+              </h2>
               <p className="section-subtitle">
-                Ready to bring your vision to life? Let's discuss how we can
-                create something extraordinary together.
+                Ready to bring your vision to life? Let&apos;s discuss how we
+                can create something extraordinary together.
               </p>
             </div>
 
