@@ -242,7 +242,7 @@ export default function Home() {
       {/* Social Dock */}
       <div className="social-dock">
         <a
-          href="https://github.com/mmllc-jsilverman"
+          href="https://github.com/jewseppi"
           target="_blank"
           rel="noopener noreferrer"
           className="social-link"

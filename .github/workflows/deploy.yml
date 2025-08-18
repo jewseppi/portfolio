@@ -55,73 +55,22 @@ jobs:
             echo "Looking for web directories..."
             find ~ -maxdepth 2 -type d -name "*html*" -o -name "*www*" -o -name "*web*" 2>/dev/null || true
 
-            - name: Debug directory structure and deploy everywhere
-            uses: appleboy/ssh-action@v1.0.0
-            with:
-              host: ${{ secrets.HOST }}
-              username: ${{ secrets.USERNAME }}
-              key: ${{ secrets.SSH_PRIVATE_KEY }}
-              script: |
-                echo "=== DEBUGGING DIRECTORY STRUCTURE ==="
-                
-                echo "1. Home directory contents:"
-                ls -la ~/
-                
-                echo "2. Looking for ALL web-related directories:"
-                find ~ -maxdepth 3 -type d \( -name "*html*" -o -name "*www*" -o -name "*web*" -o -name "*httpdocs*" \) 2>/dev/null || true
-                
-                echo "3. Checking if domains are configured in cPanel:"
-                find ~ -name "*.conf" -o -name "*domain*" 2>/dev/null | head -5 || true
-                
-                echo "4. Current public_html contents:"
-                ls -la ~/public_html/ 2>/dev/null || echo "public_html does not exist"
-                
-                echo "=== DEPLOYING TO MULTIPLE LOCATIONS ==="
-                
-                # Deploy to standard public_html
-                mkdir -p ~/public_html
-                cd ~/public_html
-                rm -rf *
-                tar -xzf ~/site.tar.gz
-                echo "Deployed to ~/public_html - files:"
-                ls -la
-                
-                # Deploy to httpdocs if it exists (some GoDaddy setups use this)
-                if [ -d ~/httpdocs ]; then
-                  echo "Found httpdocs directory, deploying there too..."
-                  cd ~/httpdocs
-                  rm -rf *
-                  tar -xzf ~/site.tar.gz
-                  echo "Deployed to ~/httpdocs - files:"
-                  ls -la
-                fi
-                
-                # Deploy to www if it exists
-                if [ -d ~/www ]; then
-                  echo "Found www directory, deploying there too..."
-                  cd ~/www
-                  rm -rf *
-                  tar -xzf ~/site.tar.gz
-                  echo "Deployed to ~/www - files:"
-                  ls -la
-                fi
-                
-                # Check if there's a domains-specific directory
-                if [ -d ~/domains ]; then
-                  echo "Found domains directory:"
-                  ls -la ~/domains/
-                fi
-                
-                echo "=== SETTING PERMISSIONS EVERYWHERE ==="
-                find ~/public_html -type f -exec chmod 644 {} \; 2>/dev/null || true
-                find ~/public_html -type d -exec chmod 755 {} \; 2>/dev/null || true
-                find ~/httpdocs -type f -exec chmod 644 {} \; 2>/dev/null || true
-                find ~/httpdocs -type d -exec chmod 755 {} \; 2>/dev/null || true
-                find ~/www -type f -exec chmod 644 {} \; 2>/dev/null || true
-                find ~/www -type d -exec chmod 755 {} \; 2>/dev/null || true
-                
-                rm ~/site.tar.gz
-                echo "=== DEPLOYMENT COMPLETE ==="
+      - name: Deploy to public_html
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            mkdir -p ~/public_html
+            rm -rf ~/public_html/*
+            cd ~/public_html
+            tar -xzf ~/site.tar.gz
+            rm ~/site.tar.gz
+            find . -type f -exec chmod 644 {} \;
+            find . -type d -exec chmod 755 {} \;
+            echo "Files deployed:"
+            ls -la
 
       - name: Create htaccess
         uses: appleboy/ssh-action@v1.0.0
