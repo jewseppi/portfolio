@@ -114,7 +114,7 @@ export default function Home() {
         ) as HTMLElement;
         if (!terminal) return;
 
-        codeContent.innerHTML = `const architect = {<br/>  background: "Enterprise Software",<br/>  specializing: "AI/ML Applications",<br/>  focus: "Intelligent automation" 🧠<br/>};<br/><br/><span class="comment">// Click anywhere to edit the code</span><br/><span class="comment">// ESC to restore</span>`;
+        codeContent.innerHTML = `const architect = {<br/>  background: "Enterprise Software",<br/>  specializing: "AI/ML Applications",<br/>  focus: "System Architecture" 🧠<br/>};<br/><br/><span class="comment">// Click anywhere to edit the code</span><br/><span class="comment">// ESC to restore</span>`;
         terminal.style.borderColor = "rgba(255, 107, 53, 0.3)";
         terminal.style.boxShadow = "none";
       };
@@ -415,7 +415,7 @@ export default function Home() {
                     data-original={`const architect = {
   background: "Enterprise Software",
   specializing: "AI/ML Applications",
-  focus: "System Architecture"" 🧠
+  focus: "System Architecture" 🧠
 };
 
 // Click anywhere to edit the code
@@ -439,8 +439,7 @@ export default function Home() {
                 AI-Driven Projects & Innovations
               </h2>
               <p className="section-subtitle">
-                Bridging enterprise software expertise with cutting-edge AI
-                applications and intelligent automation.
+                Bridging enterprise software expertise with AI technologies
               </p>
             </div>
 
