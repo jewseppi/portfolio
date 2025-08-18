@@ -587,6 +587,8 @@ body {
   white-space: pre-wrap;
   outline: none;
   min-height: 120px;
+  max-height: 300px;
+  overflow-y: auto;
   padding: 10px;
   border-radius: 8px;
   background: rgba(0, 255, 255, 0.02);
@@ -664,7 +666,9 @@ body {
 }
 
 .code-terminal[data-state="expanded"] .code-content {
-  min-height: calc(100% - 60px);
+  min-height: calc(100% - 80px);
+  max-height: calc(100% - 80px);
+  overflow-y: auto;
   font-size: 15px;
   transition: all 0.3s ease;
 }

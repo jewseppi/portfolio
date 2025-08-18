@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 
 export default function Home() {
+  // Consolidated constants
+  const ARCHITECT_CODE = `const architect = {<br/>  background: "Enterprise Software",<br/>  specializing: "AI/ML Applications",<br/>  focus: "System Architecture" 🧠<br/>};<br/><br/><span class="comment">// Click anywhere to edit the code</span><br/><span class="comment">// ESC to restore</span>`;
+
   const [particles, setParticles] = useState<
     Array<{ id: number; x: number; y: number; delay: number; duration: number }>
   >([]);
@@ -107,14 +110,14 @@ export default function Home() {
         }, 2000);
       };
 
-      // Restore original content
+      // Restore original content using the constant
       const restoreOriginal = () => {
         const terminal = document.querySelector(
           ".code-terminal"
         ) as HTMLElement;
         if (!terminal) return;
 
-        codeContent.innerHTML = `const architect = {<br/>  background: "Enterprise Software",<br/>  specializing: "AI/ML Applications",<br/>  focus: "System Architecture" 🧠<br/>};<br/><br/><span class="comment">// Click anywhere to edit the code</span><br/><span class="comment">// ESC to restore</span>`;
+        codeContent.innerHTML = ARCHITECT_CODE;
         terminal.style.borderColor = "rgba(255, 107, 53, 0.3)";
         terminal.style.boxShadow = "none";
       };
@@ -170,11 +173,56 @@ export default function Home() {
         }
       });
 
-      // Handle Enter key for line breaks
+      // Handle Enter key - add then check for overflow using max size
       codeContent.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
+
+          // Add the line break
           document.execCommand("insertHTML", false, "<br>");
+
+          // Always use the expanded terminal size as the maximum limit
+          const terminal = document.querySelector(
+            ".code-terminal"
+          ) as HTMLElement;
+          const container = document.getElementById("terminal-container");
+          if (!terminal || !container) return;
+
+          // Temporarily expand to get max size if not already expanded
+          const wasExpanded =
+            container.getAttribute("data-terminal-expanded") === "true";
+          if (!wasExpanded) {
+            container.setAttribute("data-terminal-expanded", "true");
+            // Force reflow to get accurate measurement
+            terminal.offsetHeight;
+          }
+
+          // Calculate actual available space
+          const terminalHeight = terminal.clientHeight;
+          const header = terminal.querySelector(
+            ".terminal-header"
+          ) as HTMLElement;
+          const headerHeight = header ? header.offsetHeight : 0;
+          const contentPadding =
+            parseInt(window.getComputedStyle(codeContent).paddingTop) * 2; // top + bottom
+          const maxContentHeight =
+            terminalHeight - headerHeight - contentPadding;
+
+          // Restore original state if we temporarily expanded
+          if (!wasExpanded) {
+            container.setAttribute("data-terminal-expanded", "false");
+            // Force reflow
+            terminal.offsetHeight;
+          }
+
+          // Check if content exceeds the maximum possible size
+          if (codeContent.scrollHeight > maxContentHeight) {
+            // Find and remove the last <br> tag
+            const brs = codeContent.querySelectorAll("br");
+            if (brs.length > 0) {
+              brs[brs.length - 1].remove();
+            }
+          }
         }
       });
     };
@@ -252,7 +300,7 @@ export default function Home() {
           </svg>
         </a>
         <a
-          href="https://linkedin.com/in/joseph-silverman"
+          href="https://www.linkedin.com/in/joseph-silverman/"
           target="_blank"
           rel="noopener noreferrer"
           className="social-link"
@@ -421,7 +469,7 @@ export default function Home() {
 // Click anywhere to edit the code
 // ESC to restore`}
                     dangerouslySetInnerHTML={{
-                      __html: `const architect = {<br/>  background: "Enterprise Software",<br/>  specializing: "AI/ML Applications",<br/>  focus: "Intelligent automation" 🧠<br/>};<br/><br/><span class="comment">// Click anywhere to edit the code</span><br/><span class="comment">// ESC to restore</span>`,
+                      __html: ARCHITECT_CODE,
                     }}
                   />
                 </div>
