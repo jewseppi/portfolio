@@ -109,6 +109,11 @@ jobs:
           target: "~/public_html/"
           strip_components: 1
           rm: false
+          debug: false
+          overwrite: true
+          tar_tmp_path: "/tmp/"
+        env:
+          TERM: xterm
 
       - name: Set correct permissions and configure server
         uses: appleboy/ssh-action@v1.0.0
