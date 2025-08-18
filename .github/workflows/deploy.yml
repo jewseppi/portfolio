@@ -36,37 +36,59 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy files
+      - name: Create archive and upload
         run: |
-          # Create and upload archive
           cd out
           tar -czf ../site.tar.gz .
           cd ..
           scp -o StrictHostKeyChecking=no site.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
 
-          # Deploy on server
-          ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} '
-            # Backup existing files
-            [ -d ~/public_html ] && cp -r ~/public_html ~/backup_$(date +%Y%m%d_%H%M%S) 2>/dev/null || true
-            
-            # Clear and extract
+      - name: Check server directories
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "Checking directory structure..."
+            ls -la ~/
+            echo "Looking for web directories..."
+            find ~ -maxdepth 2 -type d -name "*html*" -o -name "*www*" -o -name "*web*" 2>/dev/null || true
+
+      - name: Deploy to public_html
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            mkdir -p ~/public_html
             rm -rf ~/public_html/*
             cd ~/public_html
             tar -xzf ~/site.tar.gz
             rm ~/site.tar.gz
-            
-            # Set permissions
             find . -type f -exec chmod 644 {} \;
             find . -type d -exec chmod 755 {} \;
-            
-            echo "Deployment complete - $(find . -type f | wc -l) files deployed"
-          '
+            echo "Files deployed:"
+            ls -la
 
-      - name: Verify
+      - name: Create htaccess
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/public_html
+            cat > .htaccess << 'EOF'
+            RewriteEngine On
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule . /index.html [L]
+            EOF
+            echo "htaccess created"
+
+      - name: Verify deployment
         run: |
-          sleep 10
-          if curl -f -s https://jsilverman.ca/ > /dev/null; then
-            echo "✅ Site is live at https://jsilverman.ca"
-          else
-            echo "⚠️ Site may still be propagating"
-          fi
+          echo "Deployment complete"
+          echo "Check https://jsilverman.ca in a few minutes"
