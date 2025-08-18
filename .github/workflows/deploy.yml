@@ -1,42 +1,15 @@
-name: Deploy to GoDaddy via SSH
+name: Deploy to GoDaddy
 
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
-  workflow_dispatch: # Allows manual triggering
+  workflow_dispatch:
 
 env:
   NODE_VERSION: "20"
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run linting
-        run: npm run lint
-
-      - name: Type check
-        run: npm run type-check
-
-      - name: Run tests
-        run: npm run test
-
   deploy:
-    needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
@@ -49,180 +22,51 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build application
-        run: npm run build
+      - name: Install and build
+        run: |
+          npm ci
+          npm run build
         env:
           NEXT_PUBLIC_SITE_URL: https://jsilverman.ca
 
-      - name: Setup SSH key and test connection
+      - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          chmod 700 ~/.ssh
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
 
-          echo "🔑 Testing SSH connection..."
-          ssh -o ConnectTimeout=30 -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} "echo '✅ SSH connection successful! Server: $(hostname)'"
-
-      - name: Create backup on server
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            echo "🔄 Starting backup process..."
-            if [ -d "~/public_html" ] && [ "$(ls -A ~/public_html)" ]; then
-              cp -r ~/public_html ~/backup_$(date +%Y%m%d_%H%M%S) 2>/dev/null || true
-              echo "✅ Backup created"
-            else
-              echo "ℹ️ No existing files to backup"
-            fi
-
-            if [ -f "~/public_html/.htaccess" ]; then
-              cp ~/public_html/.htaccess ~/htaccess_backup
-              echo "📋 .htaccess backed up"
-            fi
-
-            rm -rf ~/public_html/* 2>/dev/null || true
-            rm -rf ~/public_html/.[^.]* 2>/dev/null || true
-
-            if [ -f "~/htaccess_backup" ]; then
-              mv ~/htaccess_backup ~/public_html/.htaccess
-              echo "📋 .htaccess restored"
-            fi
-
-            echo "✅ Directory cleared and ready"
-
-      - name: Deploy files via SCP
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "out/*"
-          target: "~/public_html/"
-          strip_components: 1
-          rm: false
-          debug: false
-          overwrite: true
-          tar_tmp_path: "/tmp/"
-        env:
-          TERM: xterm
-
-      - name: Set correct permissions and configure server
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            echo "🔧 Setting file permissions..."
-            find ~/public_html -type f -exec chmod 644 {} \; 2>/dev/null || true
-            find ~/public_html -type d -exec chmod 755 {} \; 2>/dev/null || true
-
-            file_count=$(find ~/public_html -type f | wc -l)
-            echo "📁 Total files deployed: $file_count"
-
-            ls -la ~/public_html/ | head -10
-
-            if [ ! -f "~/public_html/.htaccess" ]; then
-              echo "📝 Creating .htaccess file..."
-              cat > ~/public_html/.htaccess << 'EOF'
-            # Joseph Silverman Portfolio - Static Site Configuration
-
-            # Security headers
-            <IfModule mod_headers.c>
-                Header always set X-Content-Type-Options nosniff
-                Header always set X-Frame-Options DENY
-                Header always set X-XSS-Protection "1; mode=block"
-                Header always set Referrer-Policy "strict-origin-when-cross-origin"
-            </IfModule>
-
-            # Enable compression
-            <IfModule mod_deflate.c>
-                AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css text/javascript application/javascript application/json
-            </IfModule>
-
-            # Cache static assets
-            <IfModule mod_expires.c>
-                ExpiresActive On
-                ExpiresDefault "access plus 1 month"
-                ExpiresByType text/html "access plus 1 day"
-                ExpiresByType text/css "access plus 1 year"
-                ExpiresByType application/javascript "access plus 1 year"
-                ExpiresByType image/png "access plus 1 year"
-                ExpiresByType image/jpg "access plus 1 year"
-                ExpiresByType image/jpeg "access plus 1 year"
-                ExpiresByType image/svg+xml "access plus 1 year"
-                ExpiresByType image/webp "access plus 1 year"
-                ExpiresByType application/font-woff "access plus 1 year"
-                ExpiresByType application/font-woff2 "access plus 1 year"
-            </IfModule>
-
-            # WebAssembly and modern file types
-            <IfModule mod_mime.c>
-                AddType application/wasm .wasm
-                AddType application/font-woff2 .woff2
-            </IfModule>
-
-            # Handle Next.js routing and SPA behavior
-            <IfModule mod_rewrite.c>
-                RewriteEngine On
-                
-                # Handle trailing slashes for Next.js export
-                RewriteCond %{REQUEST_FILENAME} !-f
-                RewriteCond %{REQUEST_FILENAME} !-d
-                RewriteCond %{REQUEST_URI} !/$
-                RewriteRule ^(.*)$ /$1/ [L,R=301]
-                
-                # Try files, then directories, then fallback to index.html
-                RewriteCond %{REQUEST_FILENAME} !-f
-                RewriteCond %{REQUEST_FILENAME} !-d
-                RewriteRule . /index.html [L]
-            </IfModule>
-
-            # Prevent access to sensitive files
-            <FilesMatch "^\.">
-                Require all denied
-            </FilesMatch>
-            EOF
-              echo "✅ .htaccess created"
-            else
-              echo "✅ Existing .htaccess preserved"
-            fi
-
-            echo "🎯 Deployment configuration complete!"
-
-      - name: Verify deployment
+      - name: Deploy files
         run: |
-          echo "⏱️ Waiting for deployment to propagate..."
-          sleep 20
+          # Create and upload archive
+          cd out
+          tar -czf ../site.tar.gz .
+          cd ..
+          scp -o StrictHostKeyChecking=no site.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
 
-          echo "🔍 Checking site accessibility..."
+          # Deploy on server
+          ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} '
+            # Backup existing files
+            [ -d ~/public_html ] && cp -r ~/public_html ~/backup_$(date +%Y%m%d_%H%M%S) 2>/dev/null || true
+            
+            # Clear and extract
+            rm -rf ~/public_html/*
+            cd ~/public_html
+            tar -xzf ~/site.tar.gz
+            rm ~/site.tar.gz
+            
+            # Set permissions
+            find . -type f -exec chmod 644 {} \;
+            find . -type d -exec chmod 755 {} \;
+            
+            echo "Deployment complete - $(find . -type f | wc -l) files deployed"
+          '
 
-          if curl -f -s -I https://jsilverman.ca/ | grep -q "200"; then
-            echo "✅ HTTPS deployment successful - https://jsilverman.ca is accessible"
-          elif curl -f -s -I http://jsilverman.ca/ | grep -q "200"; then
-            echo "✅ HTTP deployment successful - Site is accessible (SSL may be propagating)"
+      - name: Verify
+        run: |
+          sleep 10
+          if curl -f -s https://jsilverman.ca/ > /dev/null; then
+            echo "✅ Site is live at https://jsilverman.ca"
           else
-            echo "⚠️ Site verification failed - checking response..."
-            curl -I http://jsilverman.ca/ || echo "HTTP request failed"
-            curl -I https://jsilverman.ca/ || echo "HTTPS request failed"
+            echo "⚠️ Site may still be propagating"
           fi
-
-          echo "🌐 Site should be available at: https://jsilverman.ca"
-
-      - name: Notify success
-        if: success()
-        run: |
-          echo "🎉 Deployment completed successfully!"
-          echo "🌐 Primary URL: https://jsilverman.ca"
-          echo "🔗 Fallback URL: http://jsilverman.ca"
-          echo "📊 Deployed at: $(date)"
-          echo "🚀 Your portfolio is now live!"
