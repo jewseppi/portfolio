@@ -330,11 +330,11 @@ export default function Home() {
             <div className="section-header">
               <div className="section-badge">💡 About</div>
               <h2 className="section-title">
-                Frontend Architecture & Enterprise Solutions
+                Systems Architecture & Enterprise Solutions
               </h2>
               <p className="section-subtitle">
-                Building scalable React applications and leading technical teams
-                across diverse industries.
+                Designing enterprise-grade systems and leading digital
+                transformation initiatives.
               </p>
             </div>
 
@@ -345,19 +345,15 @@ export default function Home() {
             >
               <div>
                 <p className="about-text">
-                  Senior Software Architect with over a decade of enterprise
-                  development experience, now pivoting into AI application
-                  development. I bring deep expertise in React, TypeScript, and
-                  scalable architecture to the rapidly evolving world of LLM
-                  integration and intelligent automation.
+                  Systems Architect with 15+ years building enterprise software.
+                  Currently expanding into AI and machine learning applications.
+                  I design scalable systems that solve real business problems.
                 </p>
 
                 <p className="about-text">
-                  Currently expanding into Python, LangChain, vector search, and
-                  AI-driven solutions while leveraging my proven track record in
-                  complex state management, real-time data systems, and
-                  enterprise-grade applications that handle millions in
-                  transactions.
+                  Currently learning Python, LangChain, and vector search while
+                  applying my experience in system design, DevOps, and building
+                  applications that handle complex business requirements.
                 </p>
 
                 <div className="tech-showcase">
@@ -419,7 +415,7 @@ export default function Home() {
                     data-original={`const architect = {
   background: "Enterprise Software",
   specializing: "AI/ML Applications",
-  focus: "Intelligent automation" 🧠
+  focus: "System Architecture"" 🧠
 };
 
 // Click anywhere to edit the code
