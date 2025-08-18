@@ -603,7 +603,7 @@ export default function Home() {
                   </div>
                   <div className="contact-details">
                     <h4>GitHub</h4>
-                    <p>github.com/mmllc-jsilverman</p>
+                    <p>github.com/jewseppi</p>
                   </div>
                 </div>
 
