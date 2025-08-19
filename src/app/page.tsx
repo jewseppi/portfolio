@@ -173,55 +173,86 @@ export default function Home() {
         }
       });
 
-      // Handle Enter key - add then check for overflow using max size
+      // Enter key handler that works for both modes and handles mode switching
       codeContent.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
 
-          // Add the line break
-          document.execCommand("insertHTML", false, "<br>");
+          // Check if we're in expanded mode
+          const terminal = codeContent.closest(".code-terminal");
+          const isExpanded =
+            terminal?.getAttribute("data-state") === "expanded";
 
-          // Always use the expanded terminal size as the maximum limit
-          const terminal = document.querySelector(
-            ".code-terminal"
-          ) as HTMLElement;
-          const container = document.getElementById("terminal-container");
-          if (!terminal || !container) return;
+          // Temporarily add the line break
+          const tempBR = document.createElement("br");
+          codeContent.appendChild(tempBR);
 
-          // Temporarily expand to get max size if not already expanded
-          const wasExpanded =
-            container.getAttribute("data-terminal-expanded") === "true";
-          if (!wasExpanded) {
-            container.setAttribute("data-terminal-expanded", "true");
-            // Force reflow to get accurate measurement
-            terminal.offsetHeight;
+          // Add buffer to prevent last lines from being pushed out for both modes
+          const computedStyle = window.getComputedStyle(codeContent);
+          const lineHeight = parseFloat(computedStyle.lineHeight);
+          const bufferSpace = lineHeight * 3; // Reserve space for 3 lines to prevent cutoff
+
+          // Get the container's current actual height (important for mode switching)
+          // Use Math.max to ensure we get at least the parent container height
+          const currentContainerHeight = Math.max(
+            codeContent.clientHeight,
+            codeContent.parentElement.clientHeight
+          );
+
+          // Check if this causes the content to overflow based on CURRENT container size
+          const wouldOverflow =
+            codeContent.scrollHeight > currentContainerHeight - bufferSpace;
+
+          if (wouldOverflow) {
+            // Remove the temporary line break if it causes overflow
+            codeContent.removeChild(tempBR);
+          } else {
+            // Remove the temporary one and add it properly at cursor position
+            codeContent.removeChild(tempBR);
+            document.execCommand("insertHTML", false, "<br>");
           }
+        }
+      });
 
-          // Calculate actual available space
-          const terminalHeight = terminal.clientHeight;
-          const header = terminal.querySelector(
-            ".terminal-header"
-          ) as HTMLElement;
-          const headerHeight = header ? header.offsetHeight : 0;
-          const contentPadding =
-            parseInt(window.getComputedStyle(codeContent).paddingTop) * 2; // top + bottom
-          const maxContentHeight =
-            terminalHeight - headerHeight - contentPadding;
+      // ESC key to reset height calculations in default mode
+      codeContent.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          const terminal = codeContent.closest(".code-terminal");
+          const isExpanded =
+            terminal?.getAttribute("data-state") === "expanded";
 
-          // Restore original state if we temporarily expanded
-          if (!wasExpanded) {
-            container.setAttribute("data-terminal-expanded", "false");
-            // Force reflow
-            terminal.offsetHeight;
+          if (!isExpanded) {
+            // Force browser to recalculate dimensions by triggering a reflow
+            codeContent.style.display = "none";
+            codeContent.offsetHeight; // Force reflow
+            codeContent.style.display = "";
+            codeContent.focus();
           }
+        }
+      });
 
-          // Check if content exceeds the maximum possible size
-          if (codeContent.scrollHeight > maxContentHeight) {
-            // Find and remove the last <br> tag
-            const brs = codeContent.querySelectorAll("br");
-            if (brs.length > 0) {
-              brs[brs.length - 1].remove();
-            }
+      // Reset terminal on ESC key in default mode
+      codeContent.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          const terminal = codeContent.closest(".code-terminal");
+          const isExpanded =
+            terminal?.getAttribute("data-state") === "expanded";
+
+          // Only reset in default mode
+          if (!isExpanded) {
+            // Force the content area to refresh its dimensions
+            const currentContent = codeContent.innerHTML;
+            codeContent.innerHTML = "";
+            codeContent.innerHTML = currentContent;
+            codeContent.focus();
+
+            // Move cursor to end
+            const range = document.createRange();
+            const selection = window.getSelection();
+            range.selectNodeContents(codeContent);
+            range.collapse(false);
+            selection.removeAllRanges();
+            selection.addRange(range);
           }
         }
       });
