@@ -191,7 +191,7 @@ export default function Home() {
           // Use Math.max to ensure we get at least the parent container height
           const currentContainerHeight = Math.max(
             codeContent.clientHeight,
-            codeContent.parentElement.clientHeight
+            codeContent.parentElement?.clientHeight ?? codeContent.clientHeight
           );
 
           // Check if this causes the content to overflow based on CURRENT container size
@@ -246,8 +246,8 @@ export default function Home() {
             const selection = window.getSelection();
             range.selectNodeContents(codeContent);
             range.collapse(false);
-            selection.removeAllRanges();
-            selection.addRange(range);
+            selection?.removeAllRanges();
+            selection?.addRange(range);
           }
         }
       });
