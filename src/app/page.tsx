@@ -180,8 +180,6 @@ export default function Home() {
 
           // Check if we're in expanded mode
           const terminal = codeContent.closest(".code-terminal");
-          const isExpanded =
-            terminal?.getAttribute("data-state") === "expanded";
 
           // Temporarily add the line break
           const tempBR = document.createElement("br");
@@ -262,7 +260,7 @@ export default function Home() {
     setTimeout(setupEditableTerminal, 3000);
 
     return () => observer.disconnect();
-  }, []);
+  }, [ARCHITECT_CODE]);
 
   useEffect(() => {
     const terminal = document.getElementById("code-terminal");
