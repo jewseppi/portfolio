@@ -178,9 +178,6 @@ export default function Home() {
         if (e.key === "Enter") {
           e.preventDefault();
 
-          // Check if we're in expanded mode
-          const terminal = codeContent.closest(".code-terminal");
-
           // Temporarily add the line break
           const tempBR = document.createElement("br");
           codeContent.appendChild(tempBR);
