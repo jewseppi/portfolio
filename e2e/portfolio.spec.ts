@@ -14,7 +14,7 @@ test.describe("Page load & structure", () => {
   test("page title matches metadata", async ({ page }) => {
     await page.goto("/");
     await expect(page).toHaveTitle(
-      "Joseph Silverman - Senior Software Architect & AI Developer"
+      "Joseph Silverman — Frontend Architect | Enterprise Infrastructure & Automation"
     );
   });
 
@@ -87,7 +87,7 @@ test.describe("Projects section", () => {
     await page.locator("#projects").scrollIntoViewIfNeeded();
     await page.waitForTimeout(500);
     const cards = page.locator(".project-card");
-    await expect(cards).toHaveCount(4);
+    await expect(cards).toHaveCount(5);
   });
 
   test("each card displays tech tags", async ({ page }) => {

@@ -34,44 +34,44 @@ describe("Home Page", () => {
     it("renders subtitle text", () => {
       render(<Home />);
       expect(
-        screen.getByText(/Senior Software Architect • AI Applications Developer/i)
+        screen.getByText(/Frontend Architect • Enterprise Infrastructure & Automation/i)
       ).toBeInTheDocument();
     });
 
     it("renders hero description", () => {
       render(<Home />);
       expect(
-        screen.getByText(/Bridging enterprise software with emerging AI technologies/i)
+        screen.getByText(/Currently leading CI\/CD and testing initiatives at Enmax/i)
       ).toBeInTheDocument();
     });
 
-    it("renders 'View All Projects' CTA with correct href", () => {
+    it("renders 'View Projects' CTA with correct href", () => {
       render(<Home />);
-      const cta = screen.getByRole("link", { name: /view all projects/i });
+      const cta = screen.getByRole("link", { name: /view projects/i });
       expect(cta).toBeInTheDocument();
       expect(cta).toHaveAttribute("href", "#projects");
     });
 
-    it("renders 'Ask Me Anything' CTA with correct href", () => {
+    it("renders 'Get In Touch' CTA with correct href", () => {
       render(<Home />);
-      const cta = screen.getByRole("link", { name: /ask me anything/i });
+      const cta = screen.getByRole("link", { name: /get in touch/i });
       expect(cta).toBeInTheDocument();
-      expect(cta).toHaveAttribute("href", "/chat");
+      expect(cta).toHaveAttribute("href", "#contact");
     });
 
     it("renders all 3 stat items with correct labels", () => {
       render(<Home />);
       expect(screen.getByText("15+")).toBeInTheDocument();
       expect(screen.getByText("Years Enterprise Dev")).toBeInTheDocument();
-      expect(screen.getByText("AI/ML")).toBeInTheDocument();
-      expect(screen.getByText("Development")).toBeInTheDocument();
-      expect(screen.getByText("LLM")).toBeInTheDocument();
-      expect(screen.getByText("Integration Expert")).toBeInTheDocument();
+      expect(screen.getByText("CI/CD")).toBeInTheDocument();
+      expect(screen.getByText("& DevOps")).toBeInTheDocument();
+      expect(screen.getByText("Testing")).toBeInTheDocument();
+      expect(screen.getByText("Infrastructure")).toBeInTheDocument();
     });
 
     it("renders hero badge", () => {
       render(<Home />);
-      expect(screen.getByText(/Free SSL deployment/i)).toBeInTheDocument();
+      expect(screen.getByText(/Available for contract work/i)).toBeInTheDocument();
     });
   });
 
@@ -82,7 +82,7 @@ describe("Home Page", () => {
       render(<Home />);
       expect(
         screen.getByRole("heading", {
-          name: /Systems Architecture & Enterprise Solutions/i,
+          name: /Frontend Architecture & Enterprise Infrastructure/i,
         })
       ).toBeInTheDocument();
     });
@@ -90,10 +90,10 @@ describe("Home Page", () => {
     it("renders about text paragraphs", () => {
       render(<Home />);
       expect(
-        screen.getByText(/Systems Architect with 15\+ years building enterprise software/i)
+        screen.getByText(/Frontend Architect with 15\+ years building enterprise software/i)
       ).toBeInTheDocument();
       expect(
-        screen.getByText(/Currently learning Python, LangChain, and vector search/i)
+        screen.getByText(/Currently driving CI\/CD and testing strategy at Enmax/i)
       ).toBeInTheDocument();
     });
 
@@ -101,12 +101,12 @@ describe("Home Page", () => {
       render(<Home />);
       const aboutSection = document.getElementById("about")!;
       const techNames = [
-        "Python",
-        "LangChain",
         "React",
         "TypeScript",
-        "Vector Search",
-        "LLM APIs",
+        "GitLab CI/CD",
+        "Docker",
+        "Playwright",
+        "Cucumber",
         "Next.js",
         "Cloud/DevOps",
       ];
@@ -119,8 +119,6 @@ describe("Home Page", () => {
 
     it("renders terminal with code content", () => {
       render(<Home />);
-      // The terminal renders ARCHITECT_CODE via dangerouslySetInnerHTML
-      // Check for the contentEditable div
       const codeContent = document.querySelector(".code-content");
       expect(codeContent).toBeInTheDocument();
       expect(codeContent).toHaveAttribute("contenteditable", "true");
@@ -143,31 +141,36 @@ describe("Home Page", () => {
       render(<Home />);
       expect(
         screen.getByRole("heading", {
-          name: /AI-Driven Projects & Innovations/i,
+          name: /Enterprise Projects & Tools/i,
         })
       ).toBeInTheDocument();
     });
 
-    it("renders correct number of project cards (4)", () => {
+    it("renders correct number of project cards (5)", () => {
       render(<Home />);
       const cards = document.querySelectorAll(".project-card");
-      expect(cards).toHaveLength(4);
+      expect(cards).toHaveLength(5);
     });
 
     it("renders specific project titles", () => {
       render(<Home />);
       expect(
-        screen.getByRole("heading", { name: /Multilingual Chatbot Framework/i })
+        screen.getByRole("heading", { name: /CI\/CD Testing Infrastructure/i })
       ).toBeInTheDocument();
       expect(
-        screen.getByRole("heading", { name: /AI Performance Dashboard/i })
+        screen.getByRole("heading", { name: /Enterprise Test Framework Migration/i })
       ).toBeInTheDocument();
       expect(
-        screen.getByRole("heading", { name: /Smart Delivery Platform/i })
+        screen.getByRole("heading", { name: /xlsvc — Excel Processing Tool/i })
       ).toBeInTheDocument();
       expect(
         screen.getByRole("heading", {
-          name: /WebAssembly SSL Certificate Tool/i,
+          name: /Spotify Family Playlist Sync Tool/i,
+        })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("heading", {
+          name: /Browser Test Automation Suite/i,
         })
       ).toBeInTheDocument();
     });
@@ -175,7 +178,7 @@ describe("Home Page", () => {
     it("each card has a description", () => {
       render(<Home />);
       const descriptions = document.querySelectorAll(".project-description");
-      expect(descriptions).toHaveLength(4);
+      expect(descriptions).toHaveLength(5);
       for (const desc of descriptions) {
         expect(desc.textContent?.length).toBeGreaterThan(0);
       }
@@ -207,7 +210,7 @@ describe("Home Page", () => {
       render(<Home />);
       expect(
         screen.getByRole("heading", {
-          name: /Let's Build Something Amazing/i,
+          name: /Let's Work Together/i,
         })
       ).toBeInTheDocument();
     });
@@ -325,7 +328,6 @@ describe("Home Page", () => {
       const form = document.querySelector("form") as HTMLFormElement;
       expect(form).toBeInTheDocument();
 
-      // Fill required fields
       const nameInput = screen.getByPlaceholderText("Your full name");
       const emailInput = screen.getByPlaceholderText("your.email@example.com");
       const subjectInput = screen.getByPlaceholderText("What's this about?");
@@ -341,13 +343,11 @@ describe("Home Page", () => {
       const submitBtn = screen.getByRole("button", { name: /send message/i });
       await userEvent.click(submitBtn);
 
-      // After submit, button text changes temporarily
       expect(submitBtn.textContent).toContain("Message Sent");
     });
 
     it("navigation anchor links are present", () => {
       render(<Home />);
-      // Check that the main sections have correct IDs for anchor links
       expect(document.getElementById("home")).toBeInTheDocument();
       expect(document.getElementById("about")).toBeInTheDocument();
       expect(document.getElementById("projects")).toBeInTheDocument();

@@ -9,6 +9,8 @@ export interface Project {
   icon: string;
   title: string;
   description: string;
+  highlights: string[];
   techStack: string[];
   links: ProjectLink[];
+  status: "live" | "in-progress" | "documented" | "conditional";
 }

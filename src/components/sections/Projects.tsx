@@ -7,9 +7,9 @@ export default function Projects() {
     <section id="projects" className="page-section fade-in">
       <div className="container">
         <SectionHeader
-          badge="🚀 Current Work"
-          title="AI-Driven Projects & Innovations"
-          subtitle="Bridging enterprise software expertise with AI technologies"
+          badge="🚀 Projects"
+          title="Enterprise Projects & Tools"
+          subtitle="Real-world infrastructure, testing frameworks, and developer tools"
         />
 
         <div className="projects-grid">

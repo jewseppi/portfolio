@@ -12,30 +12,30 @@ export default function Hero() {
 
       <div className="hero-content">
         <div className="hero-badge">
-          <span>🔒</span>
-          Free SSL deployment
+          <span>🚀</span>
+          Available for contract work
         </div>
 
         <h1 className="hero-title">Joseph Silverman</h1>
 
         <p className="hero-subtitle">
-          Senior Software Architect • AI Applications Developer
+          Frontend Architect • Enterprise Infrastructure & Automation
         </p>
 
         <p className="hero-description">
-          Bridging enterprise software with emerging AI technologies. Expert
-          in full-stack development, DevOps automation, Web3, LLM
-          integration, and vector search.
+          Currently leading CI/CD and testing initiatives at Enmax. Track
+          record of architecting complex migrations, building testing
+          frameworks, and delivering enterprise-grade frontend infrastructure.
         </p>
 
         <div className="cta-container">
           <a href="#projects" className="cta-button cta-primary">
             <span>🔍</span>
-            View All Projects
+            View Projects
           </a>
-          <a href="/chat" className="cta-button cta-secondary">
+          <a href="#contact" className="cta-button cta-secondary">
             <span>💬</span>
-            Ask Me Anything
+            Get In Touch
           </a>
         </div>
 
