@@ -29,6 +29,15 @@ jobs:
         env:
           NEXT_PUBLIC_SITE_URL: https://jsilverman.ca
 
+      # If your build outputs to "out/", archive that
+      - name: Create archive and upload
+        run: |
+          cd out
+          tar -czf ../site.tar.gz .
+          cd ..
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa site.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
+        env:
+          SSH_AUTH_SOCK: /dev/null
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -36,59 +45,59 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-      - name: Create archive and upload
-        run: |
-          cd out
-          tar -czf ../site.tar.gz .
-          cd ..
-          scp -o StrictHostKeyChecking=no site.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
-
-      - name: Check server directories
+      - name: Deploy to public_html (preserve xlsvc/**)
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "Checking directory structure..."
-            ls -la ~/
-            echo "Looking for web directories..."
-            find ~ -maxdepth 2 -type d -name "*html*" -o -name "*www*" -o -name "*web*" 2>/dev/null || true
+            set -euo pipefail
 
-      - name: Deploy to public_html
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
+            # Temp staging dir for extracted site
+            rm -rf ~/deploy_tmp && mkdir -p ~/deploy_tmp/site
+            tar -xzf ~/site.tar.gz -C ~/deploy_tmp/site
+            rm -f ~/site.tar.gz
+
+            # Ensure public_html exists
             mkdir -p ~/public_html
-            rm -rf ~/public_html/*
-            cd ~/public_html
-            tar -xzf ~/site.tar.gz
-            rm ~/site.tar.gz
-            find . -type f -exec chmod 644 {} \;
-            find . -type d -exec chmod 755 {} \;
-            echo "Files deployed:"
-            ls -la
 
-      - name: Create htaccess
+            # Sync while EXCLUDING your app folders
+            rsync -av --delete \
+              --exclude 'api/**' \
+              --exclude 'ui/**' \
+              ~/deploy_tmp/site/ ~/public_html/
+
+            # Permissions: don't touch api or ui folders
+            ( cd ~/public_html
+              # files (excluding api, ui)
+              find . \( -path './api' -o -path './ui' \) -prune -o -type f -print0 | xargs -0 -r chmod 644
+              # dirs (excluding api, ui) 
+              find . \( -path './api' -o -path './ui' \) -prune -o -type d -print0 | xargs -0 -r chmod 755
+            )
+
+            # Cleanup temp
+            rm -rf ~/deploy_tmp
+
+            echo "Deployed to ~/public_html (xlsvc preserved)."
+
+      - name: Create/refresh root .htaccess (Next.js static rewrite)
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/public_html
-            cat > .htaccess << 'EOF'
+            cat > ~/public_html/.htaccess << 'EOF'
             RewriteEngine On
             RewriteCond %{REQUEST_FILENAME} !-f
             RewriteCond %{REQUEST_FILENAME} !-d
             RewriteRule . /index.html [L]
             EOF
-            echo "htaccess created"
+            chmod 644 ~/public_html/.htaccess
+            echo "Root .htaccess written."
 
       - name: Verify deployment
         run: |
-          echo "Deployment complete"
-          echo "Check https://jsilverman.ca in a few minutes"
+          echo "Deployment complete ✅"
+          echo "Check https://jsilverman.ca"
