@@ -16,7 +16,7 @@ export default function Contact() {
     submitBtn.style.background = "linear-gradient(45deg, #27ca3f, #00f5ff)";
 
     setTimeout(() => {
-      submitBtn.textContent = originalText || "Send Message ✨";
+      submitBtn.textContent = originalText || "Send Message";
       submitBtn.style.background =
         "linear-gradient(45deg, var(--primary), var(--accent))";
       form.reset();
@@ -28,8 +28,8 @@ export default function Contact() {
       <div className="container">
         <SectionHeader
           badge="💬 Get In Touch"
-          title="Let&apos;s Build Something Amazing"
-          subtitle="Ready to bring your vision to life? Let&apos;s discuss how we can create something extraordinary together."
+          title="Let&apos;s Work Together"
+          subtitle="Looking for a frontend architect with CI/CD and testing expertise? Let&apos;s talk."
         />
 
         <div className="contact-grid">
@@ -107,7 +107,7 @@ export default function Contact() {
               </div>
 
               <button type="submit" className="submit-btn">
-                Send Message ✨
+                Send Message
               </button>
             </form>
           </div>

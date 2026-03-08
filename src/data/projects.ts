@@ -2,51 +2,88 @@ import { Project } from "@/types/project";
 
 export const projects: Project[] = [
   {
-    id: "chatbot",
-    icon: "💬",
-    title: "Multilingual Chatbot Framework",
+    id: "cicd-infrastructure",
+    icon: "🔄",
+    title: "CI/CD Testing Infrastructure",
     description:
-      "Building a dynamic chatbot framework with API integrations, designed for future LLM support and vector search capabilities. Focuses on scalable conversation management and intelligent routing.",
-    techStack: ["Python", "LangChain", "Vector Search", "API Integration"],
-    links: [
-      { label: "In Progress", icon: "🔄", url: "#" },
-      { label: "Coming Soon", icon: "📁", url: "#" },
+      "Architected and implemented comprehensive CI/CD testing pipelines using GitLab CI/CD, Docker, and automated quality gates. Reduced deployment failures and accelerated release cycles across enterprise teams.",
+    highlights: [
+      "GitLab CI/CD pipeline design",
+      "Docker-based test environments",
+      "Automated quality gates",
     ],
+    techStack: ["GitLab CI/CD", "Docker", "Bash", "YAML"],
+    links: [
+      { label: "Documented", icon: "📄", url: "#" },
+    ],
+    status: "documented",
   },
   {
-    id: "dashboard",
+    id: "test-framework-migration",
+    icon: "🧪",
+    title: "Enterprise Test Framework Migration",
+    description:
+      "Led migration from legacy testing frameworks to modern Playwright and Cucumber BDD test suites across multiple enterprise applications. Established testing standards and training programs for engineering teams.",
+    highlights: [
+      "Playwright + Cucumber BDD",
+      "Cross-team testing standards",
+      "Legacy framework migration",
+    ],
+    techStack: ["Playwright", "Cucumber", "TypeScript", "BDD"],
+    links: [
+      { label: "Documented", icon: "📄", url: "#" },
+    ],
+    status: "documented",
+  },
+  {
+    id: "xlsvc",
     icon: "📊",
-    title: "AI Performance Dashboard",
+    title: "xlsvc — Excel Processing Tool",
     description:
-      "Next.js + GraphQL dashboard with real-time data visualization using D3.js for model performance tracking. Designed for monitoring AI application metrics and optimization insights.",
-    techStack: ["Next.js", "GraphQL", "D3.js", "Real-time Data"],
-    links: [
-      { label: "Prototyping", icon: "🔄", url: "#" },
-      { label: "Preview", icon: "📈", url: "#" },
+      "High-performance Excel file processing service built for enterprise data workflows. Handles complex spreadsheet operations, data transformations, and batch processing at scale.",
+    highlights: [
+      "High-performance processing",
+      "Enterprise data workflows",
+      "Batch operations at scale",
     ],
-  },
-  {
-    id: "delivery",
-    icon: "🚚",
-    title: "Smart Delivery Platform",
-    description:
-      "Full-stack food delivery platform with intelligent driver routing and order allocation. Architecture designed for future AI-powered optimization algorithms and predictive analytics.",
-    techStack: ["React", "Node.js", "Optimization", "Algorithms"],
-    links: [
-      { label: "Active Dev", icon: "⚡", url: "#" },
-      { label: "Architecture", icon: "🗺️", url: "#" },
-    ],
-  },
-  {
-    id: "ssl-tool",
-    icon: "🔒",
-    title: "WebAssembly SSL Certificate Tool",
-    description:
-      "Browser-based SSL certificate generation using WebAssembly and Rust. Demonstrates advanced cryptography and performance optimization techniques.",
-    techStack: ["WebAssembly", "Rust", "Cryptography", "Performance"],
+    techStack: ["TypeScript", "Node.js", "Excel.js", "REST API"],
     links: [
       { label: "Live Tool", icon: "🚀", url: "#" },
-      { label: "Technical Deep-Dive", icon: "⚡", url: "#" },
     ],
+    status: "live",
+  },
+  {
+    id: "spotify-sync",
+    icon: "🎵",
+    title: "Spotify Family Playlist Sync Tool",
+    description:
+      "Automated playlist synchronization tool for Spotify family accounts. Keeps shared playlists in sync across family members with configurable merge strategies and conflict resolution.",
+    highlights: [
+      "Spotify API integration",
+      "Automated sync scheduling",
+      "Conflict resolution logic",
+    ],
+    techStack: ["TypeScript", "Spotify API", "Node.js", "OAuth"],
+    links: [
+      { label: "In Progress", icon: "🔄", url: "#" },
+    ],
+    status: "in-progress",
+  },
+  {
+    id: "browser-test-suite",
+    icon: "🌐",
+    title: "Browser Test Automation Suite",
+    description:
+      "Comprehensive cross-browser test automation framework supporting Chromium, Firefox, and WebKit. Includes visual regression testing, accessibility auditing, and performance benchmarking.",
+    highlights: [
+      "Cross-browser testing",
+      "Visual regression detection",
+      "Accessibility auditing",
+    ],
+    techStack: ["Playwright", "TypeScript", "Docker", "GitHub Actions"],
+    links: [
+      { label: "In Progress", icon: "🔄", url: "#" },
+    ],
+    status: "in-progress",
   },
 ];

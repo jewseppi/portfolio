@@ -10,12 +10,12 @@ interface AboutProps {
 }
 
 const techItems = [
-  { icon: "🐍", name: "Python" },
-  { icon: "🤖", name: "LangChain" },
   { icon: "⚛️", name: "React" },
   { icon: "🎯", name: "TypeScript" },
-  { icon: "🔍", name: "Vector Search" },
-  { icon: "🧠", name: "LLM APIs" },
+  { icon: "🔄", name: "GitLab CI/CD" },
+  { icon: "🐳", name: "Docker" },
+  { icon: "🎭", name: "Playwright" },
+  { icon: "🥒", name: "Cucumber" },
   { icon: "🔺", name: "Next.js" },
   { icon: "☁️", name: "Cloud/DevOps" },
 ];
@@ -26,8 +26,8 @@ export default function About({ terminalState, onTerminalAction }: AboutProps) {
       <div className="container">
         <SectionHeader
           badge="💡 About"
-          title="Systems Architecture & Enterprise Solutions"
-          subtitle="Designing enterprise-grade systems and leading digital transformation initiatives."
+          title="Frontend Architecture & Enterprise Infrastructure"
+          subtitle="Architecting CI/CD pipelines, testing frameworks, and large-scale migrations"
         />
 
         <div
@@ -37,15 +37,17 @@ export default function About({ terminalState, onTerminalAction }: AboutProps) {
         >
           <div>
             <p className="about-text">
-              Systems Architect with 15+ years building enterprise software.
-              Currently expanding into AI and machine learning applications.
-              I design scalable systems that solve real business problems.
+              Frontend Architect with 15+ years building enterprise software.
+              I specialize in CI/CD pipeline design, testing infrastructure,
+              and leading complex migration initiatives across large
+              engineering teams.
             </p>
 
             <p className="about-text">
-              Currently learning Python, LangChain, and vector search while
-              applying my experience in system design, DevOps, and building
-              applications that handle complex business requirements.
+              Currently driving CI/CD and testing strategy at Enmax, building
+              Playwright and Cucumber test frameworks, optimizing GitLab
+              pipelines, and delivering frontend infrastructure that scales
+              across enterprise organizations.
             </p>
 
             <div className="tech-showcase">

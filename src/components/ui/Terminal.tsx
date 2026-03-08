@@ -3,12 +3,12 @@
 import { useEffect } from "react";
 import type { TerminalState } from "@/types/terminal";
 
-const ARCHITECT_CODE = `const architect = {<br/>  background: "Enterprise Software",<br/>  specializing: "AI/ML Applications",<br/>  focus: "System Architecture" 🧠<br/>};<br/><br/><span class="comment">// Click anywhere to edit the code</span><br/><span class="comment">// ESC to restore</span>`;
+const ARCHITECT_CODE = `const architect = {<br/>  background: "Enterprise Frontend",<br/>  specializing: "CI/CD & Testing Infrastructure",<br/>  focus: "Pipeline Optimization" ⚡<br/>};<br/><br/><span class="comment">// Click anywhere to edit the code</span><br/><span class="comment">// ESC to restore</span>`;
 
 const ARCHITECT_CODE_PLAIN = `const architect = {
-  background: "Enterprise Software",
-  specializing: "AI/ML Applications",
-  focus: "System Architecture" 🧠
+  background: "Enterprise Frontend",
+  specializing: "CI/CD & Testing Infrastructure",
+  focus: "Pipeline Optimization" ⚡
 };
 
 // Click anywhere to edit the code

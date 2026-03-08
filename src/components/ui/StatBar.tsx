@@ -5,8 +5,8 @@ interface Stat {
 
 const stats: Stat[] = [
   { number: "15+", label: "Years Enterprise Dev" },
-  { number: "AI/ML", label: "Development" },
-  { number: "LLM", label: "Integration Expert" },
+  { number: "CI/CD", label: "& DevOps" },
+  { number: "Testing", label: "Infrastructure" },
 ];
 
 export default function StatBar() {
