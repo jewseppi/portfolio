@@ -29,21 +29,19 @@ jobs:
         env:
           NEXT_PUBLIC_SITE_URL: https://jsilverman.ca
 
-      # If your build outputs to "out/", archive that
-      - name: Create archive and upload
-        run: |
-          cd out
-          tar -czf ../site.tar.gz .
-          cd ..
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa site.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
-        env:
-          SSH_AUTH_SOCK: /dev/null
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+
+      - name: Create archive and upload
+        run: |
+          cd out
+          tar -czf ../site.tar.gz .
+          cd ..
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa site.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
 
       - name: Deploy to public_html (preserve xlsvc/**)
         uses: appleboy/ssh-action@v1.0.0
