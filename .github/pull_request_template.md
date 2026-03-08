@@ -1,8 +1,8 @@
 ## What changed
 
 
-## Cloudflare Preview
-[Auto-posted by Cloudflare Pages bot on the PR]
+## Preview
+Check the Cloudflare Pages status check "Details" link for the preview deployment.
 
 ## Screenshots (if applicable)
 

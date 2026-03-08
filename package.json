@@ -1,7 +1,8 @@
 {
   "name": "joseph-silverman-portfolio",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
+  "description": "Portfolio site for Joseph Silverman — Frontend Architect & Enterprise Infrastructure",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -13,32 +14,29 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "export": "next export",
-    "analyze": "cross-env ANALYZE=true npm run build"
+    "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
-    "@types/node": "^20.0.0",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
     "next": "^14.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "typescript": "^5.0.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^5.1.4",
     "@vitest/coverage-v8": "^4.0.18",
-    "cross-env": "^7.0.3",
     "eslint": "^8.50.0",
     "eslint-config-next": "^14.0.0",
     "jsdom": "^28.1.0",
+    "typescript": "^5.0.0",
     "vitest": "^4.0.18"
   },
   "keywords": [
@@ -46,9 +44,10 @@
     "next.js",
     "react",
     "typescript",
-    "ai",
-    "developer",
-    "software-architect"
+    "frontend-architect",
+    "ci-cd",
+    "enterprise-infrastructure",
+    "testing"
   ],
   "author": "Joseph Silverman",
   "license": "MIT"
