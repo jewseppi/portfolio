@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import type { TerminalState } from "@/types/terminal";
 
 const ARCHITECT_CODE = `const architect = {<br/>  background: "Enterprise Software",<br/>  specializing: "AI/ML Applications",<br/>  focus: "System Architecture" 🧠<br/>};<br/><br/><span class="comment">// Click anywhere to edit the code</span><br/><span class="comment">// ESC to restore</span>`;
 
@@ -12,8 +13,6 @@ const ARCHITECT_CODE_PLAIN = `const architect = {
 
 // Click anywhere to edit the code
 // ESC to restore`;
-
-type TerminalState = "normal" | "expanded" | "minimized" | "closed";
 
 interface TerminalProps {
   terminalState: TerminalState;

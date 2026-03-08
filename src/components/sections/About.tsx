@@ -2,8 +2,7 @@
 
 import SectionHeader from "@/components/ui/SectionHeader";
 import Terminal from "@/components/ui/Terminal";
-
-type TerminalState = "normal" | "expanded" | "minimized" | "closed";
+import type { TerminalState } from "@/types/terminal";
 
 interface AboutProps {
   terminalState: TerminalState;

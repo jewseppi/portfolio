@@ -6,14 +6,13 @@ import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Projects from "@/components/sections/Projects";
 import Contact from "@/components/sections/Contact";
+import type { TerminalState } from "@/types/terminal";
 
 export default function Home() {
   const [particles, setParticles] = useState<
     Array<{ id: number; x: number; y: number; delay: number; duration: number }>
   >([]);
-  const [terminalState, setTerminalState] = useState<
-    "normal" | "expanded" | "minimized" | "closed"
-  >("normal");
+  const [terminalState, setTerminalState] = useState<TerminalState>("normal");
 
   const handleTerminalAction = (action: "close" | "minimize" | "expand") => {
     const container = document.getElementById("terminal-container");
