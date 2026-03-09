@@ -41,7 +41,7 @@ describe("Home Page", () => {
     it("renders hero description", () => {
       render(<Home />);
       expect(
-        screen.getByText(/Currently building out testing infrastructure with CI\/CD workflow/i)
+        screen.getByText(/Architecting testing infrastructure with CI\/CD automation/i)
       ).toBeInTheDocument();
     });
 
