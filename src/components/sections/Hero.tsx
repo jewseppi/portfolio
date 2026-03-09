@@ -23,9 +23,10 @@ export default function Hero() {
         </p>
 
         <p className="hero-description">
-          Currently leading CI/CD and testing initiatives at Enmax. Track
-          record of architecting complex migrations, building testing
-          frameworks, and delivering enterprise-grade frontend infrastructure.
+          Architecting testing infrastructure with CI/CD automation and
+          MR-triggered pipelines. Track record of leading complex migrations,
+          building test frameworks, and delivering enterprise-grade frontend
+          systems.
         </p>
 
         <div className="cta-container">

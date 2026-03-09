@@ -41,7 +41,7 @@ describe("Home Page", () => {
     it("renders hero description", () => {
       render(<Home />);
       expect(
-        screen.getByText(/Currently leading CI\/CD and testing initiatives at Enmax/i)
+        screen.getByText(/Architecting testing infrastructure with CI\/CD automation/i)
       ).toBeInTheDocument();
     });
 
@@ -93,7 +93,7 @@ describe("Home Page", () => {
         screen.getByText(/Frontend Architect with 15\+ years building enterprise software/i)
       ).toBeInTheDocument();
       expect(
-        screen.getByText(/Currently driving CI\/CD and testing strategy at Enmax/i)
+        screen.getByText(/Currently building out testing infrastructure with optimized/i)
       ).toBeInTheDocument();
     });
 
