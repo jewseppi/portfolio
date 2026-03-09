@@ -9,30 +9,6 @@ const nextConfig = {
     unoptimized: true,
   },
 
-  webpack: (config, { isServer }) => {
-    config.experiments = {
-      ...config.experiments,
-      asyncWebAssembly: true,
-    };
-
-    config.module.rules.push({
-      test: /\.wasm$/,
-      type: "webassembly/async",
-    });
-
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-        crypto: false,
-      };
-    }
-
-    return config;
-  },
-
   async headers() {
     return [
       {
@@ -42,16 +18,6 @@ const nextConfig = {
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "X-XSS-Protection", value: "1; mode=block" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-        ],
-      },
-      {
-        source: "/wasm/:path*",
-        headers: [
-          { key: "Content-Type", value: "application/wasm" },
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
         ],
       },
       {

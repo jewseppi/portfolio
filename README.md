@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# jsilverman.ca
 
-## Getting Started
+Portfolio site for Joseph Silverman — Frontend Architect & Enterprise Infrastructure.
 
-First, run the development server:
+## Tech Stack
+
+- **Framework:** Next.js 14 (static export)
+- **Language:** TypeScript
+- **Styling:** CSS custom properties (no framework)
+- **Testing:** Vitest + React Testing Library, Playwright (cross-browser E2E)
+- **CI:** GitHub Actions (lint, type-check, test, build, e2e)
+- **Preview:** Cloudflare Pages (PR preview deployments)
+- **Hosting:** GoDaddy (deployed via SSH + rsync)
+
+## Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command              | Description                              |
+| -------------------- | ---------------------------------------- |
+| `npm run dev`        | Start dev server                         |
+| `npm run build`      | Production build (static export to /out) |
+| `npm run lint`       | Run ESLint                               |
+| `npm run type-check` | TypeScript type checking                 |
+| `npm test`           | Run unit tests (Vitest)                  |
+| `npm run test:watch` | Run unit tests in watch mode             |
+| `npm run test:coverage` | Run tests with coverage report        |
+| `npm run test:e2e`   | Run E2E tests (Playwright)              |
+| `npm run test:e2e:ui`| Run E2E tests with Playwright UI        |
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+  app/              # Next.js app router (layout, page, globals)
+  components/
+    icons/          # SVG icon components
+    layout/         # Layout components (SocialDock)
+    sections/       # Page sections (Hero, About, Projects, Contact)
+    ui/             # Reusable UI (ProjectCard, TechTag, Terminal, StatBar)
+  data/             # Project data
+  types/            # TypeScript types
+  test/             # Test setup and unit tests
+e2e/                # Playwright E2E tests
+.github/
+  workflows/        # CI + deploy workflows
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Workflow
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Create a feature branch
+2. Open a PR against `main`
+3. CI runs automatically (lint, type-check, test, build, e2e)
+4. Cloudflare Pages deploys a preview
+5. Merge to `main` triggers production deploy to GoDaddy
