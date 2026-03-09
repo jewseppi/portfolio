@@ -44,10 +44,11 @@ export default function About({ terminalState, onTerminalAction }: AboutProps) {
             </p>
 
             <p className="about-text">
-              Currently driving CI/CD and testing strategy at Enmax, building
-              Playwright and Cucumber test frameworks, optimizing GitLab
-              pipelines, and delivering frontend infrastructure that scales
-              across enterprise organizations.
+              Currently building out testing infrastructure with optimized
+              CI/CD workflows — Playwright and Cucumber test frameworks wired
+              into GitLab pipelines, with automated test runs on every MR,
+              delivering frontend infrastructure that scales across enterprise
+              organizations.
             </p>
 
             <div className="tech-showcase">
