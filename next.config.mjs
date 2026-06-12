@@ -1,7 +1,13 @@
 // next.config.mjs
+// BASE_PATH is set by the PR-preview workflow so the static export works
+// when served from a subdirectory (e.g. GitHub Pages /portfolio/).
+// Production builds leave it unset.
+const basePath = process.env.BASE_PATH || "";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "export",
+  basePath,
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
   distDir: "out",
