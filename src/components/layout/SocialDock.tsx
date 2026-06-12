@@ -10,6 +10,7 @@ export default function SocialDock() {
         target="_blank"
         rel="noopener noreferrer"
         className="social-link"
+        aria-label="GitHub profile"
       >
         <GitHubIcon />
       </a>
@@ -18,10 +19,15 @@ export default function SocialDock() {
         target="_blank"
         rel="noopener noreferrer"
         className="social-link"
+        aria-label="LinkedIn profile"
       >
         <LinkedInIcon />
       </a>
-      <a href="mailto:joseph@jsilverman.ca" className="social-link">
+      <a
+        href="mailto:joseph@jsilverman.ca"
+        className="social-link"
+        aria-label="Send email"
+      >
         <EmailIcon />
       </a>
     </div>

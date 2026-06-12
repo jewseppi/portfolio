@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import SocialDock from "@/components/layout/SocialDock";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
@@ -92,6 +94,7 @@ export default function Home() {
         ))}
       </div>
 
+      <Navbar />
       <SocialDock />
 
       <main>
@@ -103,6 +106,8 @@ export default function Home() {
         <Projects />
         <Contact />
       </main>
+
+      <Footer />
     </>
   );
 }

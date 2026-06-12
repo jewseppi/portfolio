@@ -188,18 +188,24 @@ export default function Terminal({ terminalState, onTerminalAction }: TerminalPr
   return (
     <div className="code-terminal" id="code-terminal">
       <div className="terminal-header">
-        <div
+        <button
+          type="button"
           className="terminal-dot dot-red"
+          aria-label="Close terminal"
           onClick={() => onTerminalAction("close")}
-        ></div>
-        <div
+        ></button>
+        <button
+          type="button"
           className="terminal-dot dot-yellow"
+          aria-label="Minimize terminal"
           onClick={() => onTerminalAction("minimize")}
-        ></div>
-        <div
+        ></button>
+        <button
+          type="button"
           className="terminal-dot dot-green"
+          aria-label="Expand terminal"
           onClick={() => onTerminalAction("expand")}
-        ></div>
+        ></button>
       </div>
       <div
         className="code-content"
