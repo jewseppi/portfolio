@@ -48,7 +48,7 @@ export const projects: Project[] = [
     ],
     techStack: ["TypeScript", "Node.js", "Excel.js", "REST API"],
     links: [
-      { label: "Live Tool", icon: "🚀", url: "#" },
+      { label: "Live Tool", icon: "🚀", url: "https://xlsvc.jsilverman.ca" },
     ],
     status: "live",
   },

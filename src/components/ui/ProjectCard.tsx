@@ -34,14 +34,24 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           <TechTag key={tech} label={tech} />
         ))}
       </div>
-      <div className="project-links">
-        {project.links.map((link) => (
-          <a key={link.label} href={link.url} className="project-link">
-            <span>{link.icon}</span>
-            {link.label}
-          </a>
-        ))}
-      </div>
+      {project.links.filter((l) => l.url && l.url !== "#").length > 0 && (
+        <div className="project-links">
+          {project.links
+            .filter((link) => link.url && link.url !== "#")
+            .map((link) => (
+              <a
+                key={link.label}
+                href={link.url}
+                className="project-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>{link.icon}</span>
+                {link.label}
+              </a>
+            ))}
+        </div>
+      )}
     </article>
   );
 }
