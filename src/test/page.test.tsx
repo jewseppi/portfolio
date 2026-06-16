@@ -193,13 +193,10 @@ describe("Home Page", () => {
       }
     });
 
-    it("each card has project links", () => {
+    it("xlsvc card has a live project link", () => {
       render(<Home />);
-      const cards = document.querySelectorAll(".project-card");
-      for (const card of cards) {
-        const links = card.querySelectorAll(".project-link");
-        expect(links.length).toBeGreaterThan(0);
-      }
+      const link = screen.getByRole("link", { name: /live tool/i });
+      expect(link).toHaveAttribute("href", "https://xlsvc.jsilverman.ca");
     });
   });
 
